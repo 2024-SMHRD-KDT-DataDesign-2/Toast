@@ -4,9 +4,9 @@
 https://storm-gosling-612.notion.site/faf0f2a982f04100bc626ad5480854b1
 ## 줌 바로가기
 https://us06web.zoom.us/j/6537357041?pwd=Dly5YlTtA88AkpjxceK5ObdvMuPhbJ.1
-#### DB 
+## DB 
 ![image](https://github.com/user-attachments/assets/0157a40a-da7b-4523-b94a-ea55923cc431)
-#### DB 설계도
+## DB 설계도
 URL : https://aquerytool.com/aquerymain/index/?rurl=a7aa08a5-d98c-4153-838e-ca11ae8b2575&
 
 Password : 3g0i8a

@@ -8,6 +8,7 @@ https://us06web.zoom.us/j/6537357041?pwd=Dly5YlTtA88AkpjxceK5ObdvMuPhbJ.1
 ![image](https://github.com/user-attachments/assets/0157a40a-da7b-4523-b94a-ea55923cc431)
 #### DB 설계도
 URL : https://aquerytool.com/aquerymain/index/?rurl=a7aa08a5-d98c-4153-838e-ca11ae8b2575&
+
 Password : 3g0i8a
 ## 프로젝트 추천 사이트
 https://seonzeroticket.notion.site/c2b3090e6fe7463e84ea7ec1b7422574

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Toast.db.PlaceMapper">
+
+	<!-- 전체 음식점 목록 -->
+	<select id="getPlaces"
+		resultType="com.Toast.model.placeDTO">
+		SELECT * FROM tb_place
+	</select>
+
+	<!-- 음식점 목록 필터링 -->
+	<select id="filtering"
+		parameterType="com.Toast.model.filteringDTO"
+		resultType="com.Toast.model.placeDTO">
+		select *
+		from tb_place
+		where
+		1=1
+		<if test="place_district != null">
+			and place_district = #{place_district}
+		</if>
+		<if test="parking_yn != null and parking_yn != '\0'">
+			and parking_yn = #{parking_yn}
+		</if>
+		<if test="keywords != null and keywords.size() > 0">
+			<trim prefix="and (" suffix=")" suffixOverrides="OR">
+				<foreach collection="keywords" item="keyword" separator="and">
+					keyword like '%' || #{keyword} || '%'
+				</foreach>
+			</trim>
+		</if>
+	</select>
+
+	<!-- 인덱스 번호로 식당 찾기 -->
+	<select id="getPlaceByIdx" resultType="com.Toast.model.placeDTO">
+		select * from tb_place
+		where place_idx = #{place_idx}
+	</select>
+
+	<!-- 종료 시간 -->
+	<select id="closeTime" parameterType="int" resultType="String">
+		SELECT
+		CASE TO_CHAR(SYSDATE, 'DY', 'NLS_DATE_LANGUAGE=ENGLISH')
+		WHEN 'MON'
+		THEN SUBSTR(mon, INSTR(mon, ' - ') + 3)
+		WHEN 'TUE' THEN SUBSTR(tue,
+		INSTR(tue, ' - ') + 3)
+		WHEN 'WED' THEN SUBSTR(wed, INSTR(wed, ' - ') +
+		3)
+		WHEN 'THU' THEN SUBSTR(thur, INSTR(thur, ' - ') + 3)
+		WHEN 'FRI' THEN
+		SUBSTR(fri, INSTR(fri, ' - ') + 3)
+		WHEN 'SAT' THEN SUBSTR(sat,
+		INSTR(sat, ' - ') + 3)
+		WHEN 'SUN' THEN SUBSTR(sun, INSTR(sun, ' - ') +
+		3)
+		END AS today
+		FROM
+		tb_place
+		where place_idx = #{place_idx}
+	</select>
+
+	<!-- 영업 여부 -->
+	<select id="isOpen" parameterType="int" resultType="String">
+		SELECT
+		CASE
+		TO_CHAR(SYSDATE, 'DY', 'NLS_DATE_LANGUAGE=ENGLISH')
+		WHEN 'MON' THEN
+		CASE
+		WHEN TO_DATE(TO_CHAR(SYSDATE, 'HH24:MI'), 'HH24:MI') BETWEEN
+		TO_DATE(SUBSTR(mon, 1, INSTR(mon, ' - ') - 1), 'HH24:MI')
+		AND
+		TO_DATE(SUBSTR(mon, INSTR(mon, ' - ') + 3), 'HH24:MI')
+		THEN 'Open'
+		ELSE
+		'Closed'
+		END
+		WHEN 'TUE' THEN
+		CASE
+		WHEN TO_DATE(TO_CHAR(SYSDATE,
+		'HH24:MI'), 'HH24:MI') BETWEEN
+		TO_DATE(SUBSTR(tue, 1, INSTR(tue, ' - ')
+		- 1), 'HH24:MI')
+		AND TO_DATE(SUBSTR(tue, INSTR(tue, ' - ') + 3),
+		'HH24:MI')
+		THEN 'Open'
+		ELSE 'Closed'
+		END
+		WHEN 'WED' THEN
+		CASE
+		WHEN
+		TO_DATE(TO_CHAR(SYSDATE, 'HH24:MI'), 'HH24:MI') BETWEEN
+		TO_DATE(SUBSTR(wed, 1, INSTR(wed, ' - ') - 1), 'HH24:MI')
+		AND
+		TO_DATE(SUBSTR(wed, INSTR(wed, ' - ') + 3), 'HH24:MI')
+		THEN 'Open'
+		ELSE
+		'Closed'
+		END
+		WHEN 'THU' THEN
+		CASE
+		WHEN TO_DATE(TO_CHAR(SYSDATE,
+		'HH24:MI'), 'HH24:MI') BETWEEN
+		TO_DATE(SUBSTR(thur, 1, INSTR(thur, ' -
+		') - 1), 'HH24:MI')
+		AND TO_DATE(SUBSTR(thur, INSTR(thur, ' - ') + 3),
+		'HH24:MI')
+		THEN 'Open'
+		ELSE 'Closed'
+		END
+		WHEN 'FRI' THEN
+		CASE
+		WHEN
+		TO_DATE(TO_CHAR(SYSDATE, 'HH24:MI'), 'HH24:MI') BETWEEN
+		TO_DATE(SUBSTR(fri, 1, INSTR(fri, ' - ') - 1), 'HH24:MI')
+		AND
+		TO_DATE(SUBSTR(fri, INSTR(fri, ' - ') + 3), 'HH24:MI')
+		THEN 'Open'
+		ELSE
+		'Closed'
+		END
+		WHEN 'SAT' THEN
+		CASE
+		WHEN TO_DATE(TO_CHAR(SYSDATE,
+		'HH24:MI'), 'HH24:MI') BETWEEN
+		TO_DATE(SUBSTR(sat, 1, INSTR(sat, ' - ')
+		- 1), 'HH24:MI')
+		AND TO_DATE(SUBSTR(sat, INSTR(sat, ' - ') + 3),
+		'HH24:MI')
+		THEN 'Open'
+		ELSE 'Closed'
+		END
+		WHEN 'SUN' THEN
+		CASE
+		WHEN
+		TO_DATE(TO_CHAR(SYSDATE, 'HH24:MI'), 'HH24:MI') BETWEEN
+		TO_DATE(SUBSTR(sun, 1, INSTR(sun, ' - ') - 1), 'HH24:MI')
+		AND
+		TO_DATE(SUBSTR(sun, INSTR(sun, ' - ') + 3), 'HH24:MI')
+		THEN 'Open'
+		ELSE
+		'Closed'
+		END
+		ELSE 'Closed'
+		END AS status
+		FROM tb_place
+		WHERE place_idx =
+		#{place_idx}
+	</select>
+
+	<!-- 식당 idx를 통해 방문 식당 조회 -->
+	<select id="getVisitedPlaceByIdx" parameterType="String"
+		resultType="com.Toast.model.placeDTO">
+		select distinct place_idx, place_name, place_addr,
+		place_tel
+		from tb_review natural join tb_place
+		where mem_id = #{mem_id}
+	</select>
+
+</mapper>

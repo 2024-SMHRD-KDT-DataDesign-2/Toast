@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리뷰 페이지</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #C2D3E0;
+        }
+
+        .container {
+            width: 360px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header h1 {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .back-btn {
+            font-size: 24px;
+            cursor: pointer;
+            color: black;
+            margin-right: auto;
+        }
+
+        .content {
+            margin-top: 20px;
+        }
+
+        .stars {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .star {
+            font-size: 24px;
+            color: lightgray;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .star.checked {
+            color: gold;
+        }
+
+        .photo-upload {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            color: black; /* 사진등록 텍스트 색을 검정색으로 변경 */
+        }
+
+        .photo-upload span {
+            font-size: 16px;
+        }
+
+        .input-box {
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #5079a9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px; /* 추가 */
+        }
+
+        .submit-btn:hover {
+            background-color: #3b6289;
+        }
+
+        #imagePreview {
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        /* 언더바(수평선) 스타일 */
+        .separator {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Header with back button -->
+        <div class="header">
+            <span class="back-btn" onclick="goBack()">←</span> <!-- Back button -->
+            <h1>리뷰</h1>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- 식당명 추가 -->
+            <h1>식당명</h1>
+
+            <!-- 별점과 언더바 -->
+            <div class="stars" id="starRating">
+                <span class="star" data-value="1">★</span>
+                <span class="star" data-value="2">★</span>
+                <span class="star" data-value="3">★</span>
+                <span class="star" data-value="4">★</span>
+                <span class="star" data-value="5">★</span>
+            </div>
+
+            <!-- 언더바 추가 (별점 밑) -->
+            <hr class="separator">
+
+            <!-- Image Preview -->
+            <img id="imagePreview" alt="사진 미리보기" />
+
+            <!-- Photo Upload Section -->
+            <div class="photo-upload" onclick="triggerFileInput()">
+                <span>사진등록</span>
+                <input type="file" id="photoInput" style="display: none;" accept="image/*" onchange="previewImage(event)" />
+            </div>
+
+            <div class="input-box">
+                <p>👍 이런 점이 좋아요</p>
+                <textarea placeholder="식당이 깔끔해요" rows="2" style="width: 100%; border: none; background-color: #f4f4f4;"></textarea>
+            </div>
+
+            <div class="input-box">
+                <p>👎 이런 점은 개선해 주세요</p>
+                <textarea placeholder="종업원이 불친절해요" rows="2" style="width: 100%; border: none; background-color: #f4f4f4;"></textarea>
+            </div>
+
+            <div class="input-box">
+                <p>❤️ 이 메뉴 추천해요</p>
+                <textarea placeholder="육회, 떡갈비" rows="2" style="width: 100%; border: none; background-color: #f4f4f4;"></textarea>
+            </div>
+
+            <!-- 언더바 추가 -->
+            <hr class="separator">
+
+            <!-- 등록 버튼 -->
+            <button class="submit-btn">등록</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to navigate to the desired URL when back button is clicked
+        function goBack() {
+            window.location.href = "your-url-here.html"; // 원하는 URL 입력
+        }
+
+        // Star rating functionality
+        const stars = document.querySelectorAll('.star');
+        stars.forEach(star => {
+            star.addEventListener('click', function () {
+                const starValue = this.getAttribute('data-value');
+                
+                // Toggle star rating
+                if (this.classList.contains('checked')) {
+                    this.classList.remove('checked');
+                } else {
+                    stars.forEach(s => {
+                        if (s.getAttribute('data-value') <= starValue) {
+                            s.classList.add('checked');
+                        } else {
+                            s.classList.remove('checked');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Function to trigger the file input for photo upload
+        function triggerFileInput() {
+            document.getElementById('photoInput').click();
+        }
+
+        // Function to preview the selected image
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block'; // Show image preview
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리뷰 화면</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d5e3f0;
+        }
+
+        .container {
+            width: 360px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+    background-color: #f5f5f5;
+    padding: 15px;
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    align-items: center;
+    position: relative; /* 자식 요소를 절대 위치로 배치하기 위해 relative 설정 */
+}
+
+.header h1 {
+    font-size: 20px;
+    color: #333;
+    position: absolute; /* 가운데 정렬을 위해 절대 위치로 배치 */
+    left: 50%;
+    transform: translateX(-50%); /* 정확한 가운데 배치 */
+}
+
+.back-btn {
+    position: absolute;
+    left: 15px; /* ← 아이콘 왼쪽 고정 */
+    font-size: 24px;
+    cursor: pointer;
+    color: black;
+}
+
+.header a {
+    position: absolute;
+    right: 15px; /* 작성 버튼 오른쪽 고정 */
+    padding: 5px 10px;
+    background-color: #5079a9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+        .review-count {
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .review-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .review-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .stars {
+            color: gold;
+        }
+
+        .review-image {
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .review-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .review-footer {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            color: #888;
+        }
+
+        .review-footer span {
+            margin-right: 10px;
+        }
+
+        .icon {
+            font-size: 14px;
+            margin-right: 5px;
+        }
+
+        .icon-like,
+        .icon-comment {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- 뒤로 가기 아이콘 추가, 클릭 시 이동할 URL 설정 -->
+            <span class="back-btn" onclick="goBack()">←</span> <!-- ← 아이콘 추가 -->
+            <h1>식당명</h1>
+            <a href="https://www.example.com" target="_blank">작성</a>
+        </div>
+
+        <div class="review-count">작성된 리뷰 302개</div>
+
+        <div class="review-item">
+            <div class="review-header">
+                <div class="review-title">너만바라봄</div>
+                <div class="stars">★★★★★</div>
+            </div>
+            <img src="https://via.placeholder.com/300x200" alt="음식 이미지" class="review-image">
+            <div class="review-description">
+                맛있습니다. 기본 떡갈비입니다. 가격도 괜찮아요. 고기가 부드럽고 육즙이 가득합니다.
+            </div>
+            <div class="review-footer">
+                <span class="icon-like">👍 4</span>
+                <span class="icon-comment">💬 1</span>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function goBack() {
+    window.location.href = 'http://127.0.0.1:5500/%ED%86%A0%EC%8A%A4%ED%8A%B8/%EB%A7%88%EC%9D%B4%ED%8E%98%EC%9D%B4%EC%A7%80.html'; // 원하는 URL로 이동
+}
+</script>
+</html>

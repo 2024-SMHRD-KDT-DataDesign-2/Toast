@@ -1,0 +1,54 @@
+@charset "UTF-8";
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    position: relative;
+}
+
+.back-btn {
+    margin-right: auto;
+	cursor: pointer;
+	position: absolute;
+	left: 10px;
+}
+
+.restaurant-list {
+    margin: 20px;
+}
+
+.restaurant-block {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.restaurant-block h2 {
+    margin-top: 0;
+    color: #2d98da;
+}
+
+.restaurant-block p {
+    margin: 5px 0;
+}
+
+.restaurant-block a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.restaurant-block a:hover {
+    text-decoration: underline;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}

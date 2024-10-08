@@ -1,0 +1,100 @@
+@charset "UTF-8";
+
+/* 기본 스타일 */
+body, html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	font-family: Arial, sans-serif;
+}
+
+#map {
+	width: 100%;
+	height: 60vh; /* 모바일에서 지도의 높이 설정 */
+}
+
+/* 헤더 */
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px;
+	background-color: #3267E2;
+	color: white;
+}
+
+.header h1 {
+	margin: 0;
+	font-size: 24px;
+}
+
+/* 사이드바 */
+.sidebar {
+	height: 100%;
+	width: 0;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: #C2D3E0;
+	overflow-x: hidden;
+	transition: 0.5s;
+	padding-top: 60px;
+}
+
+.sidebar a {
+	padding: 10px 15px;
+	text-decoration: none;
+	font-size: 18px;
+	color: #000;
+	display: block;
+	transition: 0.3s;
+}
+
+.sidebar a:hover {
+	background-color: #575757;
+	color: white;
+}
+
+.sidebar .closebtn {
+	position: absolute;
+	top: 0;
+	right: 15px;
+	font-size: 36px;
+}
+
+/* 메인 콘텐츠 */
+.map-container {
+	padding: 20px;
+	text-align: center;
+}
+
+.info-box {
+	background-color: #f4f4f4;
+	padding: 15px;
+	margin-top: 10px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 미디어 쿼리 (모바일 친화적인 레이아웃) */
+@media ( max-width : 768px) {
+	#map {
+		height: 50vh; /* 모바일에서 지도 높이 조절 */
+	}
+	.info-box h2 {
+		font-size: 18px;
+	}
+	.info-box p {
+		font-size: 14px;
+	}
+	.header h1 {
+		font-size: 18px;
+	}
+	.sidebar a {
+		font-size: 16px;
+	}
+	.sidebar .closebtn {
+		font-size: 30px;
+	}
+}

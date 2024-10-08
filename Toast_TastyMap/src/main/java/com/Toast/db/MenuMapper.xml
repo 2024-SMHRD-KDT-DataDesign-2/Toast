@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Toast.db.MenuMapper">
+
+	<!-- 식당 전체 메뉴 가져오기 -->
+	<select id="getMenuByIdx" parameterType="int" resultType="com.Toast.model.menuDTO">
+		select * from tb_menu
+		where place_idx=#{place_idx}
+	</select>
+
+</mapper>

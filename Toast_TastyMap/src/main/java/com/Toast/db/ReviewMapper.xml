@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.Toast.db.ReviewMapper">
+
+	<!-- 리뷰 추가 -->
+	<insert id="insertReview"
+		parameterType="com.Toast.model.reviewDTO">
+		INSERT INTO tb_review (
+		review_idx, mem_id, place_idx,
+		review_content_good, review_content_bad,
+		review_content_recommend,
+		review_img1, review_img2, review_img3,
+		created_at, review_ratings
+		)
+		VALUES (
+		tb_review_seq.NEXTVAL, #{mem_id}, #{place_idx},
+		#{review_content_good},
+		#{review_content_bad},
+		#{review_content_recommend},
+		#{review_img1, jdbcType=VARCHAR},
+		#{review_img2, jdbcType=VARCHAR}, #{review_img3,
+		jdbcType=VARCHAR},
+		SYSDATE, #{review_ratings}
+		)
+	</insert>
+	
+	<!-- 리뷰 수정 -->
+	<update id="updateReview"
+		parameterType="com.Toast.model.reviewDTO">
+		UPDATE tb_review
+		SET review_content_good=#{review_content_good},
+		review_content_bad=#{review_content_bad},
+		review_content_recommend=#{review_content_recommend},
+		review_ratings=#{review_ratings},
+		review_img1=#{review_img1},
+		review_img2=#{review_img2},
+		review_img3=#{review_img3}
+		WHERE review_idx=#{review_idx}
+	</update>
+
+	<!-- 특정 회원의 리뷰 리스트 조회 -->
+	<select id="getReviewsByMember" parameterType="String"
+		resultType="com.Toast.model.reviewDTO">
+		SELECT *
+		FROM tb_review
+		WHERE mem_id = #{mem_id}
+		order by created_at asc
+	</select>
+
+	<!-- 방문 식당: 식당별 방문 횟수 -->
+	<select id="getVisitedTimes"
+		parameterType="com.Toast.model.reviewDTO" resultType="int">
+		SELECT COUNT(*)
+		FROM tb_review
+		WHERE mem_id=#{mem_id} AND place_idx=#{place_idx}
+	</select>
+
+	<!-- 방문 식당: 식당별 평균 평점 -->
+	<select id="getVisitedRatings"
+		parameterType="com.Toast.model.reviewDTO" resultType="double">
+		SELECT
+		round(CAST(AVG(review_ratings) AS NUMBER),2)
+		FROM tb_review
+		WHERE
+		mem_id=#{mem_id} AND place_idx=#{place_idx}
+	</select>
+
+	<!-- 식당idx를 통해 식당명 정보 조회 -->
+	<select id="getPlaceNameByIdx" parameterType="String"
+		resultType="String">
+		SELECT PLACE_NAME
+		FROM TB_REVIEW NATURAL JOIN TB_PLACE
+		WHERE
+		mem_id = #{mem_id}
+	</select>
+
+	<!-- 리뷰 테이블의 식당idx를 통해 식당 정보 조회 -->
+	<select id="getPlaceByReview" parameterType="String"
+		resultType="com.Toast.model.placeDTO">
+		select *
+		from tb_review natural join tb_place
+		where mem_id =
+		#{mem_id}
+	</select>
+
+	<!-- 식당의 리뷰 개수 -->
+	<select id="countReviewByIdx" parameterType="int"
+		resultType="int">
+		select count(*) from tb_review
+		where place_idx=#{place_idx}
+	</select>
+
+	<!-- 내가 작성한 리뷰 개수 -->
+	<select id="countReviewByMember" resultType="int">
+		select count(*) from
+		tb_review
+		where mem_id = #{mem_id}
+	</select>
+
+	<!-- 식당 전체 리뷰 -->
+	<select id="getPlaceReviews" parameterType="int"
+		resultType="com.Toast.model.reviewDTO">
+		select * from tb_review
+		where place_idx = #{place_idx}
+		order by created_at desc
+	</select>
+
+	<!-- 리뷰 삭제 -->
+	<delete id="deleteReview" parameterType="com.Toast.model.reviewDTO">
+		DELETE FROM tb_review WHERE review_idx =
+		#{review_idx}
+	</delete>
+
+	<!-- 리뷰 상세 조회 -->
+	<select id="getReviewById" parameterType="int"
+		resultType="com.Toast.model.reviewDTO">
+		SELECT *
+		FROM tb_review
+		WHERE review_idx = #{review_idx}
+	</select>
+
+	<!-- 리뷰idx를 통한 식당명 조회 -->
+	<select id="getPlaceNameByReviewIdx" resultType="String">
+		select
+		place_name
+		from tb_review natural join tb_place
+		where review_idx =
+		#{review_idx}
+	</select>
+
+	<!-- 리뷰idx를 통한 작성자nick 조회 -->
+	<select id="getMemNickByReviewIdx" resultType="String">
+		select mem_nick
+		from tb_review natural join tb_member
+		where review_idx = #{review_idx}
+	</select>
+
+	<!-- 식당의 평균 별점 -->
+	<select id="getAvgRatings" resultType="double">
+		select
+		round(avg(review_ratings),2) as avg_ratings
+		from tb_review
+		group by
+		place_idx
+		having place_idx = #{place_idx}
+	</select>
+
+</mapper>

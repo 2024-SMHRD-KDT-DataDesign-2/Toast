@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.Toast.db.MemberMapper">
+
+	<!-- 회원가입 -->
+	<insert id="join" parameterType="com.Toast.model.memberDTO">
+		insert into tb_member (mem_img,
+		mem_id, mem_pw, mem_nick, mem_ribbon,
+		mem_grade)
+		values (#{mem_img},
+		#{mem_id}, #{mem_pw}, #{mem_nick}, #{mem_ribbon},
+		#{mem_grade})
+	</insert>
+
+	<!-- mem_id 중복 체크 -->
+	<select id="checkDuplicateId" resultType="int"
+		parameterType="string">
+		SELECT COUNT(*) FROM tb_member WHERE mem_id = #{mem_id}
+	</select>
+
+	<!-- 로그인 -->
+	<select id="login" resultType="com.Toast.model.memberDTO"
+		parameterType="com.Toast.model.memberDTO">
+		SELECT * FROM tb_member
+		WHERE mem_id = #{mem_id} AND
+		mem_pw = #{mem_pw}
+	</select>
+
+	<!-- Pw 수정 -->
+	<update id="updatePw" parameterType="com.Toast.model.memberDTO">
+		UPDATE tb_member
+		SET mem_pw =
+		#{mem_pw}
+		WHERE mem_id = #{mem_id}
+	</update>
+
+	<!-- Nick 수정 -->
+	<update id="updateNick"
+		parameterType="com.Toast.model.memberDTO">
+		UPDATE tb_member
+		SET mem_nick = #{mem_nick}
+		WHERE mem_id =
+		#{mem_id}
+	</update>
+
+	<!-- Img 수정 -->
+	<update id="updateImg" parameterType="com.Toast.model.memberDTO">
+		UPDATE tb_member
+		SET mem_img
+		= #{mem_img}
+		WHERE mem_id = #{mem_id}
+	</update>
+
+	<!-- grade 자동 업데이트 -->
+	<update id="updateGrade" parameterType="com.Toast.model.memberDTO">
+		UPDATE tb_member
+		SET mem_grade =
+		CASE
+		WHEN (SELECT COUNT(*) FROM tb_review WHERE mem_id = #{mem_id}) >= 250 THEN
+		'다이아'
+		WHEN (SELECT COUNT(*) FROM tb_review WHERE mem_id = #{mem_id}) >= 160 THEN
+		'플래티넘'
+		WHEN (SELECT COUNT(*) FROM tb_review WHERE mem_id = #{mem_id}) >= 90 THEN
+		'골드'
+		WHEN (SELECT COUNT(*) FROM tb_review WHERE mem_id = #{mem_id}) >= 30 THEN
+		'실버'
+		ELSE 
+		'브론즈'
+		END
+		WHERE mem_id = #{mem_id}
+	</update>
+	
+	<!-- 현재 grade -->
+	<select id="memGrade" resultType="String" parameterType="com.Toast.model.memberDTO">
+		select mem_grade from tb_member
+		where mem_id = #{mem_id}
+	</select>
+
+</mapper>
